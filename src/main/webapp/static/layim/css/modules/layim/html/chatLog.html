@@ -1,0 +1,122 @@
+
+ 
+ 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>聊天记录</title>
+
+<link rel="stylesheet" href="./lib/layui/css/layui.css" media="all">
+<script src="./lib/layui/layui.js"></script>
+<script type="text/javascript" src="./lib/jquery/jquery-1.3.2.min.js"></script>
+<style>
+body .layim-chat-main{height: auto;}
+</style>
+</head>
+<body>
+
+<div class="layim-chat-main">
+  <ul id="LAY_view"></ul>
+</div>
+
+<div id="LAY_page" style="margin: 0 10px;"></div>
+
+
+<textarea title="消息模版" id="LAY_tpl" style="display:none;">
+{{# layui.each(d.data, function(index, item){
+  if(item.id == parent.layui.layim.cache().mine.id){ }}
+    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}"><cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite></div><div class="layim-chat-text">{{ layui.layim.content(item.content) }}</div></li>
+  {{# } else { }}
+    <li><div class="layim-chat-user"><img src="{{ item.avatar }}"><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.layim.content(item.content) }}</div></li>
+  {{# }
+}); }}
+</textarea>
+
+<div id="demo1"></div>
+<!-- 
+上述模版采用了 laytpl 语法，不了解的同学可以去看下文档：http://www.layui.com/doc/modules/laytpl.html
+
+-->
+<script>
+console.log("chatLog");
+
+layui.use(['layim', 'laypage'], function(){
+  var layim = layui.layim
+  ,layer = layui.layer
+  ,laytpl = layui.laytpl
+  ,$ = layui.jquery
+  ,laypage = layui.laypage;
+  
+  //聊天记录的分页此处不做演示，你可以采用laypage，不了解的同学见文档：http://www.layui.com/doc/modules/laypage.html
+  //开始请求聊天记录
+  var param =  location.search; //获得URL参数。该窗口url会携带会话id和type，他们是你请求聊天记录的重要凭据
+  
+  //实际使用时，下述的res一般是通过Ajax获得，而此处仅仅只是演示数据格式
+  $.ajax({
+        type: 'GET',
+        url: "./chatLogList"+param,
+        dataType: 'json',
+        success: function(data){
+          console.log(data);
+          var html = laytpl(LAY_tpl.value).render({
+              data: data.chatLog
+            });
+            $('#LAY_view').html(html);
+
+            setupSplitPage(laytpl,data,param);
+        },
+        error: function(xhr){
+//            layer.msg('error');
+        }
+    });
+
+  
+  console.log(param)
+
+  
+});
+
+function setupSplitPage(laytpl,data,param) {
+	layui.use(['laypage', 'layer'], function(){
+		  var laypage = layui.laypage
+		  ,layer = layui.layer;
+		  
+		  laypage({
+		    cont: 'demo1'
+		    ,pages: data.pages //总页数
+		    ,groups: 5 //连续显示分页数
+		  });
+		  
+		  //将一段数组分页展示
+		  
+		  //调用分页
+		  laypage({
+		    cont: 'demo1'
+		    ,pages: data.pages //得到总页数
+		    ,jump: function(obj){
+		    	$.ajax({
+		            type: 'GET',
+		            url: "./chatLogList"+param+"&page="+obj.curr,
+		            dataType: 'json',
+		            success: function(data){
+		              console.log(data);
+		              var html = laytpl(LAY_tpl.value).render({
+		                  data: data.chatLog
+		                });
+		                $('#LAY_view').html(html);
+		            },
+		            error: function(xhr){
+//		                layer.msg('error');
+		            }
+		        });
+		    }
+		  });
+		  
+		});
+}
+</script>
+
+</body>
+</html>

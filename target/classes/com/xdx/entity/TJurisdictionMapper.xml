@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TJurisdictionMapper" >
+  <resultMap id="BaseResultMap" type="com.xdx.entity.TJurisdiction" >
+    <id column="jurisdiction_id" property="jurisdictionId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="menu_id" property="menuId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    jurisdiction_id, role_id, menu_id, create_time, is_del
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_jurisdiction
+    where jurisdiction_id = #{jurisdictionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_jurisdiction
+    where jurisdiction_id = #{jurisdictionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xdx.entity.TJurisdiction" >
+    insert into t_jurisdiction (jurisdiction_id, role_id, menu_id, 
+      create_time, is_del)
+    values (#{jurisdictionId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{menuId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdx.entity.TJurisdiction" >
+    insert into t_jurisdiction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jurisdictionId != null" >
+        jurisdiction_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jurisdictionId != null" >
+        #{jurisdictionId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdx.entity.TJurisdiction" >
+    update t_jurisdiction
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where jurisdiction_id = #{jurisdictionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdx.entity.TJurisdiction" >
+    update t_jurisdiction
+    set role_id = #{roleId,jdbcType=INTEGER},
+      menu_id = #{menuId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where jurisdiction_id = #{jurisdictionId,jdbcType=INTEGER}
+  </update>
+  <!-- 扩展 -->
+  <!-- 通过roleId获取权限菜单 -->
+  <select id="selectTJurisdictionByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_jurisdiction
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+  	<!-- 包含了菜单信息的权限列表 -->
+	<resultMap id="ResultMapIncludeJurisdiction" type="java.util.Map">
+		<id column="menu_id" property="menuId" jdbcType="INTEGER" />
+		<result column="p_menu_id" property="pMenuId" jdbcType="INTEGER" />
+		<result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+		<result column="jurisdiction_id" property="jurisdictionId" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Column_List_include_jurisdiction">
+		t1.menu_id, t1.p_menu_id,t1.menu_name,ifnull(t2.jurisdiction_id,0) as jurisdiction_id
+	</sql>
+	<!-- 通过 roleId获取其菜单列表，并标明是否有选中某项菜单-->
+	<select id="selectJurisdictionByRoleId" parameterType="java.lang.Integer" resultMap="ResultMapIncludeJurisdiction">
+		select
+		<include refid="Column_List_include_jurisdiction" />
+		from t_menu t1 left join (select jurisdiction_id,menu_id from t_jurisdiction where role_id=#{roleId,jdbcType=INTEGER}) t2 on t1.menu_id=t2.menu_id
+		where t1.is_del=0 order by t1.priority1
+	</select>
+	<!-- 删除某roleId下的所有权限 -->
+	<delete id="deleteByRoleId" parameterType="java.lang.Integer" >
+	    delete from t_jurisdiction
+	    where role_id = #{roleId,jdbcType=INTEGER}
+	  </delete>
+</mapper>

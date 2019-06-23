@@ -1,0 +1,36 @@
+[{
+	  "menuId":"1",
+      "name": "基本信息",
+      "controller":"#",
+      "child": []
+  },{
+	  "menuId":"2",
+      "name": "会员管理",
+      "controller":"#",
+      "child": [{
+		  "menuId":"3",
+		  "pMenuId":"2",
+          "name": "会员概览",
+          "controller":"partner/home"
+      },{
+		  "menuId":"4",
+		  "pMenuId":"2",
+          "name": "添加会员",
+          "controller":"partner/add"
+      }] 
+  },{
+      "menuId":"5",
+      "name": "销售管理",
+      "controller":"#",
+      "child": [{
+	      "menuId":"5",
+		  "pMenuId":"6",
+          "name": "销售返佣",
+          "controller":"post/home"
+      },{
+		  "menuId":"5",
+		  "pMenuId":"7",
+          "name": "销售报表",
+          "controller":"post/add"
+      }]
+  }]

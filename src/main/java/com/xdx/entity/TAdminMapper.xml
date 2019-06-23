@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TAdminMapper">
+	<resultMap id="BaseResultMap" type="com.xdx.entity.TAdmin">
+		<id column="admin_id" property="adminId" jdbcType="INTEGER" />
+		<result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+		<result column="true_name" property="trueName" jdbcType="VARCHAR" />
+		<result column="user_face" property="userFace" jdbcType="VARCHAR" />
+		<result column="brief_info" property="briefInfo" jdbcType="VARCHAR" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		admin_id, admin_name, true_name, user_face, brief_info, role_id, pwd,
+		creat_time,
+		update_time, is_del
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_admin
+		where admin_id = #{adminId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_admin
+		where admin_id = #{adminId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xdx.entity.TAdmin">
+		insert into t_admin (admin_id, admin_name, true_name,
+		user_face, brief_info, role_id,
+		pwd, creat_time, update_time,
+		is_del)
+		values (#{adminId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR},
+		#{trueName,jdbcType=VARCHAR},
+		#{userFace,jdbcType=VARCHAR}, #{briefInfo,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER},
+		#{pwd,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{isDel,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xdx.entity.TAdmin">
+		insert into t_admin
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="adminId != null">
+				admin_id,
+			</if>
+			<if test="adminName != null">
+				admin_name,
+			</if>
+			<if test="trueName != null">
+				true_name,
+			</if>
+			<if test="userFace != null">
+				user_face,
+			</if>
+			<if test="briefInfo != null">
+				brief_info,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="pwd != null">
+				pwd,
+			</if>
+			<if test="creatTime != null">
+				creat_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="adminId != null">
+				#{adminId,jdbcType=INTEGER},
+			</if>
+			<if test="adminName != null">
+				#{adminName,jdbcType=VARCHAR},
+			</if>
+			<if test="trueName != null">
+				#{trueName,jdbcType=VARCHAR},
+			</if>
+			<if test="userFace != null">
+				#{userFace,jdbcType=VARCHAR},
+			</if>
+			<if test="briefInfo != null">
+				#{briefInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="pwd != null">
+				#{pwd,jdbcType=VARCHAR},
+			</if>
+			<if test="creatTime != null">
+				#{creatTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDel != null">
+				#{isDel,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xdx.entity.TAdmin">
+		update t_admin
+		<set>
+			<if test="adminName != null">
+				admin_name = #{adminName,jdbcType=VARCHAR},
+			</if>
+			<if test="trueName != null">
+				true_name = #{trueName,jdbcType=VARCHAR},
+			</if>
+			<if test="userFace != null">
+				user_face = #{userFace,jdbcType=VARCHAR},
+			</if>
+			<if test="briefInfo != null">
+				brief_info = #{briefInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				role_id = #{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="pwd != null">
+				pwd = #{pwd,jdbcType=VARCHAR},
+			</if>
+			<if test="creatTime != null">
+				creat_time = #{creatTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDel != null">
+				is_del = #{isDel,jdbcType=INTEGER},
+			</if>
+		</set>
+		where admin_id = #{adminId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xdx.entity.TAdmin">
+		update t_admin
+		set admin_name = #{adminName,jdbcType=VARCHAR},
+		true_name = #{trueName,jdbcType=VARCHAR},
+		user_face = #{userFace,jdbcType=VARCHAR},
+		brief_info = #{briefInfo,jdbcType=VARCHAR},
+		role_id = #{roleId,jdbcType=INTEGER},
+		pwd = #{pwd,jdbcType=VARCHAR},
+		creat_time = #{creatTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		is_del = #{isDel,jdbcType=INTEGER}
+		where admin_id = #{adminId,jdbcType=INTEGER}
+	</update>
+	<!-- 扩展 -->
+	<resultMap id="ResultMapIncludeRole" type="java.util.Map">
+		<id column="admin_id" property="adminId" jdbcType="INTEGER" />
+		<result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+		<result column="true_name" property="trueName" jdbcType="VARCHAR" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Column_List_include_role">
+		t1.admin_id, t1.admin_name,t1.true_name,t1.role_id, t1.pwd,
+		t1.creat_time, t1.update_time, t1.is_del,t2.role_name
+	</sql>
+	<select id="selectListByPm" parameterType="pm" resultMap="ResultMapIncludeRole">
+		select
+		<include refid="Column_List_include_role" />
+		from t_admin t1 inner join t_role t2 on t1.role_id=t2.role_id
+		where
+		t1.is_del=0
+		<if test="adminName != null">
+			and t1.admin_name LIKE CONCAT('%', #{adminName},'%')
+		</if>
+		<if test="roleId != null">
+			and t1.role_id =#{roleId,jdbcType=INTEGER}
+		</if>
+		order by t1.creat_time desc
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="selectSizeByPm" parameterType="pm" resultType="java.lang.Integer">
+		select count(admin_id) as "size"
+		from t_admin
+		where is_del=0
+		<if test="adminName != null">
+			and admin_name LIKE CONCAT('%', #{adminName},'%')
+		</if>
+		<if test="roleId != null">
+			and role_id =#{roleId,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectAllList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_admin
+		where is_del=0
+	</select>
+	<!-- 根据adminName获取admin -->
+	<select id="selectAdminByAdminName" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_admin
+		where is_del=0
+		<!-- and admin_name= #{_parameter,jdbcType=VARCHAR} -->
+		and admin_name= #{adminName,jdbcType=VARCHAR}
+	</select>
+	<!-- 修改密码 -->
+	<update id="updatePwd" parameterType="com.xdx.entity.TAdmin">
+		update t_admin
+		set pwd =
+		#{pwd,jdbcType=VARCHAR},
+		update_time = now()
+		where admin_id =
+		#{adminId,jdbcType=INTEGER}
+	</update>
+	<!-- 修改头像和简介 -->
+	<update id="updateFaceAndInfo" parameterType="com.xdx.entity.TAdmin">
+		update t_admin
+		set
+		user_face = #{userFace,jdbcType=VARCHAR},
+		brief_info=
+		#{briefInfo,jdbcType=VARCHAR},
+		update_time = now()
+		where admin_id =
+		#{adminId,jdbcType=INTEGER}
+	</update>
+	<!-- 插入且返回主键 -->
+	<insert id="insertSelectiveRePk" parameterType="com.xdx.entity.TAdmin"
+		useGeneratedKeys="true" keyProperty="adminId" keyColumn="admin_id">
+		insert into t_admin
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="adminId != null">
+				admin_id,
+			</if>
+			<if test="adminName != null">
+				admin_name,
+			</if>
+			<if test="trueName != null">
+				true_name,
+			</if>
+			<if test="userFace != null">
+				user_face,
+			</if>
+			<if test="briefInfo != null">
+				brief_info,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="pwd != null">
+				pwd,
+			</if>
+			<if test="creatTime != null">
+				creat_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="adminId != null">
+				#{adminId,jdbcType=INTEGER},
+			</if>
+			<if test="adminName != null">
+				#{adminName,jdbcType=VARCHAR},
+			</if>
+			<if test="trueName != null">
+				#{trueName,jdbcType=VARCHAR},
+			</if>
+			<if test="userFace != null">
+				#{userFace,jdbcType=VARCHAR},
+			</if>
+			<if test="briefInfo != null">
+				#{briefInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="pwd != null">
+				#{pwd,jdbcType=VARCHAR},
+			</if>
+			<if test="creatTime != null">
+				#{creatTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDel != null">
+				#{isDel,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+</mapper>

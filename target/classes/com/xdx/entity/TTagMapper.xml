@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TTagMapper" >
+  <resultMap id="BaseResultMap" type="com.xdx.entity.TTag" >
+    <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tag_id, tag_name, priority, num, create_time, update_time, is_del
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_tag
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_tag
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xdx.entity.TTag" >
+    insert into t_tag (tag_id, tag_name, priority, 
+      num, create_time, update_time, 
+      is_del)
+    values (#{tagId,jdbcType=INTEGER}, #{tagName,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
+      #{num,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdx.entity.TTag" >
+    insert into t_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tagId != null" >
+        tag_id,
+      </if>
+      <if test="tagName != null" >
+        tag_name,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tagId != null" >
+        #{tagId,jdbcType=INTEGER},
+      </if>
+      <if test="tagName != null" >
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdx.entity.TTag" >
+    update t_tag
+    <set >
+      <if test="tagName != null" >
+        tag_name = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdx.entity.TTag" >
+    update t_tag
+    set tag_name = #{tagName,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </update>
+  <!-- 扩展 -->
+	 <select id="selectList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_tag where is_del=0
+		order by priority desc
+	</select>
+	<select id="selectListByPm" parameterType="pm" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_tag where is_del=0
+		<if test="tagName != null">
+			and tag_name LIKE CONCAT('%', #{tagName},'%')
+		</if>
+		order by tag_name 
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="selectSizeByPm" parameterType="pm" resultType="java.lang.Integer">
+		select count(tag_id) as "size"
+		from t_tag
+		where is_del=0
+		<if test="tagName != null">
+			and tag_name LIKE CONCAT('%', #{tagName},'%')
+		</if>
+	</select>
+	<!-- 隐式删除 -->
+	<update id="hiddenTagById" parameterType="java.lang.Integer">
+		update t_tag
+		set is_del = 1
+		where tag_id = #{tagId,jdbcType=INTEGER}
+	</update>
+	<!-- 根据tagName获取 -->
+	<select id="selectByTagName" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_tag
+		where tag_name = #{tagName,jdbcType=VARCHAR}
+	</select>
+	<!-- 改变tag对应的数量 -->
+	<update id="updateBlogNum" parameterType="com.xdx.entity.TTag">
+		update t_tag
+		set num = #{num,jdbcType=INTEGER}
+		where tag_id = #{tagId,jdbcType=INTEGER}
+	</update>
+</mapper>

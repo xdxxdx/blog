@@ -1,0 +1,84 @@
+/*按钮*/
+.icon_div {
+	display: inline-block;
+	height: 31px;
+	width: 35px;
+	background:
+		url(http://c.csdnimg.cn/public/common/toolbar/images/f_icon.png)
+		no-repeat 12px -127px;
+}
+
+.icon_div a {
+	display: inline-block;
+	width: 27px;
+	height: 20px;
+	cursor: pointer;
+}
+
+/*end--按钮*/
+
+/*ztree表格*/
+.ztree {
+	padding: 0;
+	border: 2px solid #CDD6D5;
+}
+
+.ztree li a {
+	vertical-align: middle;
+	height: 30px;
+}
+
+.ztree li>a {
+	width: 100%;
+}
+
+.ztree li>a, .ztree li a.curSelectedNode {
+	padding-top: 0px;
+	background: none;
+	height: auto;
+	border: none;
+	cursor: default;
+	opacity: 1;
+}
+
+.ztree li ul {
+	padding-left: 0px
+}
+
+.ztree div.diy span {
+	line-height: 30px;
+	vertical-align: middle;
+}
+
+.ztree div.diy {
+	height: 100%;
+	width: 16.5%;
+	line-height: 30px;
+	border-top: 1px dotted #ccc;
+	border-left: 1px solid #eeeeee;
+	text-align: center;
+	display: inline-block;
+	box-sizing: border-box;
+	color: #6c6c6c;
+	font-family: "SimSun";
+	font-size: 12px;
+	overflow: hidden;
+}
+
+.ztree div.diy:first-child {
+	text-align: left;
+	text-indent: 10px;
+	border-left: none;
+}
+
+.ztree .head {
+	background: #dd4b39;
+}
+
+.ztree .head div.diy {
+	border-top: none;
+	border-right: 1px solid #CDD2D4;
+	color: #fff;
+	font-family: "Microsoft YaHei";
+	font-size: 14px;
+}

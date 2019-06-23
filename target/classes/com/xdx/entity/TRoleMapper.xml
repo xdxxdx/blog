@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TRoleMapper">
+	<resultMap id="BaseResultMap" type="com.xdx.entity.TRole">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="role_intro" property="roleIntro" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		role_id, role_name, role_intro, create_time, update_time, is_del
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_role
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_role
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xdx.entity.TRole">
+		insert into t_role (role_id, role_name, role_intro,
+		create_time, update_time, is_del
+		)
+		values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR},
+		#{roleIntro,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.xdx.entity.TRole">
+		insert into t_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="roleName != null">
+				role_name,
+			</if>
+			<if test="roleIntro != null">
+				role_intro,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="roleName != null">
+				#{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="roleIntro != null">
+				#{roleIntro,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDel != null">
+				#{isDel,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xdx.entity.TRole">
+		update t_role
+		<set>
+			<if test="roleName != null">
+				role_name = #{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="roleIntro != null">
+				role_intro = #{roleIntro,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDel != null">
+				is_del = #{isDel,jdbcType=INTEGER},
+			</if>
+		</set>
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xdx.entity.TRole">
+		update t_role
+		set role_name = #{roleName,jdbcType=VARCHAR},
+		role_intro = #{roleIntro,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		is_del = #{isDel,jdbcType=INTEGER}
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</update>
+	<!-- 扩展 -->
+	<select id="selectListByPm" parameterType="pm" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_role
+		where is_del=0
+		<if test="roleName != null">
+			and admin_name LIKE CONCAT('%', #{roleName},'%')
+		</if>
+		order by create_time desc
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="selectSizeByPm" parameterType="pm" resultType="java.lang.Integer">
+		select count(role_id) as "size"
+		from t_role
+		where is_del=0
+		<if test="roleName != null">
+			and role_name LIKE CONCAT('%', #{roleName},'%')
+		</if>
+	</select>
+	<!-- 获取所以 -->
+	<select id="selectAllList"  resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_role
+		where is_del=0
+	</select>
+	<!-- 根据roleName获取role -->
+	<select id="selectRoleByRoleName" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_role
+		where is_del=0
+		<!-- and admin_name= #{_parameter,jdbcType=VARCHAR} -->
+		and role_name= #{roleName,jdbcType=VARCHAR}
+	</select>
+	<!-- 隐式删除 -->
+	<select id="hiddenByPk" parameterType="java.lang.Integer">
+		update t_role
+		set is_del =1
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+</mapper>

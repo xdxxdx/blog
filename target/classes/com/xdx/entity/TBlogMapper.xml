@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TBlogMapper" >
+  <resultMap id="BaseResultMap" type="com.xdx.entity.TBlog" >
+    <id column="blog_id" property="blogId" jdbcType="INTEGER" />
+    <result column="blog_title" property="blogTitle" jdbcType="VARCHAR" />
+    <result column="blog_abstract" property="blogAbstract" jdbcType="VARCHAR" />
+    <result column="author_id" property="authorId" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="read_num" property="readNum" jdbcType="INTEGER" />
+    <result column="collect_num" property="collectNum" jdbcType="INTEGER" />
+    <result column="comment_num" property="commentNum" jdbcType="INTEGER" />
+    <result column="default_pic" property="defaultPic" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_private" property="isPrivate" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.xdx.entity.TBlog" extends="BaseResultMap" >
+    <result column="blog_content" property="blogContent" jdbcType="LONGVARCHAR" />
+    <result column="blog_md" property="blogMd" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    blog_id, blog_title, blog_abstract, author_id, category_id, category_name, read_num, 
+    collect_num, comment_num, default_pic, status, is_private, create_time, update_time, 
+    is_del
+  </sql>
+  <sql id="Blob_Column_List" >
+    blog_content,blog_md
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_blog
+    where blog_id = #{blogId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_blog
+    where blog_id = #{blogId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xdx.entity.TBlog" >
+    insert into t_blog (blog_id, blog_title, blog_abstract, 
+      author_id, category_id, category_name, 
+      read_num, collect_num, comment_num, 
+      default_pic, status, is_private, 
+      create_time, update_time, is_del, 
+      blog_content,blog_md)
+    values (#{blogId,jdbcType=INTEGER}, #{blogTitle,jdbcType=VARCHAR}, #{blogAbstract,jdbcType=VARCHAR}, 
+      #{authorId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, 
+      #{readNum,jdbcType=INTEGER}, #{collectNum,jdbcType=INTEGER}, #{commentNum,jdbcType=INTEGER}, 
+      #{defaultPic,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{isPrivate,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER}, 
+      #{blogContent,jdbcType=LONGVARCHAR}, #{blogMd,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdx.entity.TBlog" >
+    insert into t_blog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="blogId != null" >
+        blog_id,
+      </if>
+      <if test="blogTitle != null" >
+        blog_title,
+      </if>
+      <if test="blogAbstract != null" >
+        blog_abstract,
+      </if>
+      <if test="authorId != null" >
+        author_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="readNum != null" >
+        read_num,
+      </if>
+      <if test="collectNum != null" >
+        collect_num,
+      </if>
+      <if test="commentNum != null" >
+        comment_num,
+      </if>
+      <if test="defaultPic != null" >
+        default_pic,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isPrivate != null" >
+        is_private,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="blogContent != null" >
+        blog_content,
+      </if>
+      <if test="blogMd != null" >
+        blog_md,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="blogId != null" >
+        #{blogId,jdbcType=INTEGER},
+      </if>
+      <if test="blogTitle != null" >
+        #{blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="blogAbstract != null" >
+        #{blogAbstract,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        #{authorId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="readNum != null" >
+        #{readNum,jdbcType=INTEGER},
+      </if>
+      <if test="collectNum != null" >
+        #{collectNum,jdbcType=INTEGER},
+      </if>
+      <if test="commentNum != null" >
+        #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="defaultPic != null" >
+        #{defaultPic,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isPrivate != null" >
+        #{isPrivate,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="blogContent != null" >
+        #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="blogMd != null" >
+        #{blogMd,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdx.entity.TBlog" >
+    update t_blog
+    <set >
+      <if test="blogTitle != null" >
+        blog_title = #{blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="blogAbstract != null" >
+        blog_abstract = #{blogAbstract,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null" >
+        author_id = #{authorId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="readNum != null" >
+        read_num = #{readNum,jdbcType=INTEGER},
+      </if>
+      <if test="collectNum != null" >
+        collect_num = #{collectNum,jdbcType=INTEGER},
+      </if>
+      <if test="commentNum != null" >
+        comment_num = #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="defaultPic != null" >
+        default_pic = #{defaultPic,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isPrivate != null" >
+        is_private = #{isPrivate,jdbcType=INTEGER},
+      </if>
+<!--       <if test="createTime != null" > -->
+<!--         create_time = #{createTime,jdbcType=TIMESTAMP}, -->
+<!--       </if> -->
+        update_time = now(),
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="blogContent != null" >
+        blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="blogMd != null" >
+        blog_md = #{blogMd,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where blog_id = #{blogId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdx.entity.TBlog" >
+    update t_blog
+    set blog_title = #{blogTitle,jdbcType=VARCHAR},
+      blog_abstract = #{blogAbstract,jdbcType=VARCHAR},
+      author_id = #{authorId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      read_num = #{readNum,jdbcType=INTEGER},
+      collect_num = #{collectNum,jdbcType=INTEGER},
+      comment_num = #{commentNum,jdbcType=INTEGER},
+      default_pic = #{defaultPic,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      is_private = #{isPrivate,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time =now(),
+      is_del = #{isDel,jdbcType=INTEGER},
+      blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+      blog_md = #{blogMd,jdbcType=LONGVARCHAR}
+    where blog_id = #{blogId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdx.entity.TBlog" >
+    update t_blog
+    set blog_title = #{blogTitle,jdbcType=VARCHAR},
+      blog_abstract = #{blogAbstract,jdbcType=VARCHAR},
+      author_id = #{authorId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      read_num = #{readNum,jdbcType=INTEGER},
+      collect_num = #{collectNum,jdbcType=INTEGER},
+      comment_num = #{commentNum,jdbcType=INTEGER},
+      default_pic = #{defaultPic,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      is_private = #{isPrivate,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now(),
+      is_del = #{isDel,jdbcType=INTEGER}
+    where blog_id = #{blogId,jdbcType=INTEGER}
+  </update>
+    <!-- 扩展 -->
+  <select id="selectListByPm" parameterType="pm" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_blog
+		where is_del=0 and is_private=0
+		<if test="blogTitle != null and blogTitle !=''">
+			and blog_title LIKE CONCAT('%', #{blogTitle},'%')
+		</if>
+		<if test="status != null and status !=''">
+			and status= #{status,jdbcType=INTEGER}
+		</if>
+		<if test="categoryId != null and categoryId !='' ">
+			and category_id= #{categoryId,jdbcType=INTEGER}
+		</if>
+		<if test="tagId != null and tagId!='' ">
+			and blog_id in(select blog_id from t_blog_tag where tag_id=#{tagId,jdbcType=INTEGER}) 
+		</if>
+		order by create_time desc
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="selectListMByPm" parameterType="pm" resultType="java.util.Map">
+		select t1.blog_id as blogId,t1.blog_title as blogTitle,t1.blog_abstract as blogAbstract,t1.category_id as categoryId,t1.category_name as categoryName,
+		t1.read_num as readNum,t1.collect_num as collectNum,t1.comment_num as commentNum,t1.default_pic as defaultPic,t1.status as status,t1.is_private as isPrivate,
+		t1.create_time as createTime,t1.update_time as updateTime,t1.is_del as isDel,t1.author_id as authorId,t2.admin_name as authorName,t2.user_face as userFace
+		from t_blog t1 inner join t_admin t2 on t1.author_id=t2.admin_id
+		where t1.is_del=0 and t1.is_private=0
+		<if test="blogTitle != null and blogTitle !=''">
+			and t1.blog_title LIKE CONCAT('%', #{blogTitle},'%')
+		</if>
+		<if test="status != null and status !=''">
+			and t1.status= #{status,jdbcType=INTEGER}
+		</if>
+		<if test="categoryId != null and categoryId !='' ">
+			and t1.category_id= #{categoryId,jdbcType=INTEGER}
+		</if>
+		<if test="tagId != null and tagId!='' ">
+			and t1.blog_id in(select blog_id from t_blog_tag where tag_id=#{tagId,jdbcType=INTEGER}) 
+		</if>
+		order by t1.create_time desc
+		LIMIT #{offset},#{limit}
+	</select>
+	 <select id="selectPriListByPm" parameterType="pm" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_blog
+		where is_del=0 and is_private=1
+		<if test="blogTitle != null and blogTitle !=''">
+			and blog_title LIKE CONCAT('%', #{blogTitle},'%')
+		</if>
+		<if test="status != null and status !=''">
+			and status= #{status,jdbcType=INTEGER}
+		</if>
+		<if test="categoryId != null and categoryId !='' ">
+			and category_id= #{categoryId,jdbcType=INTEGER}
+		</if>
+		<if test="tagId != null and tagId!='' ">
+			and blog_id in(select blog_id from t_blog_tag where tag_id=#{tagId,jdbcType=INTEGER}) 
+		</if>
+		order by create_time desc
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="selectListWithContentByPm" parameterType="pm" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />,
+		<include refid="Blob_Column_List" />
+		from t_blog 
+		where is_del=0 and is_private=0
+		<if test="blogTitle != null and blogTitle !=''">
+			and blog_title LIKE CONCAT('%', #{blogTitle},'%')
+		</if>
+		<if test="status != null and status !=''">
+			and status= #{status,jdbcType=INTEGER}
+		</if>
+		<if test="categoryId != null and categoryId !='' ">
+			and category_id= #{categoryId,jdbcType=INTEGER}
+		</if>
+		<if test="tagId != null and tagId!='' ">
+			and blog_id in(select blog_id from t_blog_tag where tag_id=#{tagId,jdbcType=INTEGER}) 
+		</if>
+		order by create_time desc
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="selectPriListWithContentByPm" parameterType="pm" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />,
+		<include refid="Blob_Column_List" />
+		from t_blog 
+		where is_del=0 and is_private=1
+		<if test="blogTitle != null and blogTitle !=''">
+			and blog_title LIKE CONCAT('%', #{blogTitle},'%')
+		</if>
+		<if test="status != null and status !=''">
+			and status= #{status,jdbcType=INTEGER}
+		</if>
+		<if test="categoryId != null and categoryId !='' ">
+			and category_id= #{categoryId,jdbcType=INTEGER}
+		</if>
+		<if test="tagId != null and tagId!='' ">
+			and blog_id in(select blog_id from t_blog_tag where tag_id=#{tagId,jdbcType=INTEGER}) 
+		</if>
+		order by create_time desc
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="selectSizeByPm" parameterType="pm" resultType="java.lang.Integer">
+		select count(blog_id) as "size"
+		from t_blog
+		where is_del=0 and is_private=0
+		<if test="blogTitle != null and blogTitle !=''">
+			and blog_title LIKE CONCAT('%', #{blogTitle},'%')
+		</if>
+		<if test="status != null and status !=''">
+			and status= #{status,jdbcType=INTEGER}
+		</if>
+		<if test="categoryId != null and categoryId !='' ">
+			and category_id= #{categoryId,jdbcType=INTEGER}
+		</if>
+		<if test="tagId != null and tagId!='' ">
+			and blog_id in(select blog_id from t_blog_tag where tag_id=#{tagId,jdbcType=INTEGER}) 
+		</if>
+	</select>
+	<select id="selectPriSizeByPm" parameterType="pm" resultType="java.lang.Integer">
+		select count(blog_id) as "size"
+		from t_blog
+		where is_del=0 and is_private=1
+		<if test="blogTitle != null and blogTitle !=''">
+			and blog_title LIKE CONCAT('%', #{blogTitle},'%')
+		</if>
+		<if test="status != null and status !=''">
+			and status= #{status,jdbcType=INTEGER}
+		</if>
+		<if test="categoryId != null and categoryId !='' ">
+			and category_id= #{categoryId,jdbcType=INTEGER}
+		</if>
+		<if test="tagId != null and tagId!='' ">
+			and blog_id in(select blog_id from t_blog_tag where tag_id=#{tagId,jdbcType=INTEGER}) 
+		</if>
+	</select>
+	<!-- 隐式删除 -->
+	<update id="hiddenBlogById" parameterType="java.lang.Integer">
+		update t_blog
+		set
+		is_del = 1
+		where blog_id = #{blogId,jdbcType=INTEGER}
+	</update>
+	<!-- 插入并且返回主键 -->
+	<insert id="insertSelectiveRePk" parameterType="com.xdx.entity.TBlog"
+		useGeneratedKeys="true" keyProperty="blogId" keyColumn="blog_id">
+	 insert into t_blog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="blogId != null" >
+        blog_id,
+      </if>
+      <if test="blogTitle != null" >
+        blog_title,
+      </if>
+      <if test="blogAbstract != null" >
+        blog_abstract,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="readNum != null" >
+        read_num,
+      </if>
+      <if test="collectNum != null" >
+        collect_num,
+      </if>
+      <if test="commentNum != null" >
+        comment_num,
+      </if>
+      <if test="defaultPic != null" >
+        default_pic,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isPrivate != null" >
+        is_private,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="blogContent != null" >
+        blog_content,
+      </if>
+      <if test="blogMd != null" >
+        blog_md,
+      </if>
+       <if test="authorId != null" >
+        author_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="blogId != null" >
+        #{blogId,jdbcType=INTEGER},
+      </if>
+      <if test="blogTitle != null" >
+        #{blogTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="blogAbstract != null" >
+        #{blogAbstract,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="readNum != null" >
+        #{readNum,jdbcType=INTEGER},
+      </if>
+      <if test="collectNum != null" >
+        #{collectNum,jdbcType=INTEGER},
+      </if>
+      <if test="commentNum != null" >
+        #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="defaultPic != null" >
+        #{defaultPic,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isPrivate != null" >
+        #{isPrivate,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="blogContent != null" >
+        #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="blogMd != null" >
+        #{blogMd,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="authorId != null" >
+        #{authorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+	</insert>
+	<!-- 改变状态 -->
+	<update id="updateStatus" parameterType="com.xdx.entity.TBlog">
+		update t_blog
+		set
+		status =#{status,jdbcType=INTEGER}
+		where blog_id = #{blogId,jdbcType=INTEGER}
+	</update>
+	<!-- 获取类别的文章数 -->
+	<select id="countCategoryBlogNum"  resultType="java.util.Map">
+		select category_id as categoryId,count(blog_id) as num
+		from t_blog
+		where is_del=0 group by category_id
+	</select>
+	<!-- 根据categoryId修改categoryName -->
+	<update id="updateCategoryNameByCategoryId" parameterType="com.xdx.entity.TCategory">
+		update t_blog
+		set
+		category_name =#{categoryName,jdbcType=VARCHAR}
+		where category_id = #{categoryId,jdbcType=INTEGER}
+	</update>
+</mapper>

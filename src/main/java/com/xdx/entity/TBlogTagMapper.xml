@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TBlogTagMapper" >
+  <resultMap id="BaseResultMap" type="com.xdx.entity.TBlogTag" >
+    <id column="blog_tag_id" property="blogTagId" jdbcType="INTEGER" />
+    <result column="blog_id" property="blogId" jdbcType="INTEGER" />
+    <result column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    blog_tag_id, blog_id, tag_id, num, create_time, is_del
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_blog_tag
+    where blog_tag_id = #{blogTagId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_blog_tag
+    where blog_tag_id = #{blogTagId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xdx.entity.TBlogTag" >
+    insert into t_blog_tag (blog_tag_id, blog_id, tag_id, 
+      num, create_time, is_del
+      )
+    values (#{blogTagId,jdbcType=INTEGER}, #{blogId,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}, 
+      #{num,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdx.entity.TBlogTag" >
+    insert into t_blog_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="blogTagId != null" >
+        blog_tag_id,
+      </if>
+      <if test="blogId != null" >
+        blog_id,
+      </if>
+      <if test="tagId != null" >
+        tag_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="blogTagId != null" >
+        #{blogTagId,jdbcType=INTEGER},
+      </if>
+      <if test="blogId != null" >
+        #{blogId,jdbcType=INTEGER},
+      </if>
+      <if test="tagId != null" >
+        #{tagId,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdx.entity.TBlogTag" >
+    update t_blog_tag
+    <set >
+      <if test="blogId != null" >
+        blog_id = #{blogId,jdbcType=INTEGER},
+      </if>
+      <if test="tagId != null" >
+        tag_id = #{tagId,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where blog_tag_id = #{blogTagId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdx.entity.TBlogTag" >
+    update t_blog_tag
+    set blog_id = #{blogId,jdbcType=INTEGER},
+      tag_id = #{tagId,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where blog_tag_id = #{blogTagId,jdbcType=INTEGER}
+  </update>
+  <!-- 扩展 -->
+	<!-- 包含了标签信息 -->
+	<resultMap id="ResultMapJoinTag" type="java.util.Map">
+		<result column="tag_id" property="tagId" jdbcType="INTEGER" />
+		<result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+		<result column="blog_id" property="blogId" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Column_List_Join_Tag">
+		t1.tag_id, t1.tag_name,ifnull(t2.blog_id,0) as blog_id
+	</sql>
+	<!-- 通过 blogId获取其tag列表，并标明是否有选中某项tag -->
+	<select id="selectTagByblogId" parameterType="java.lang.Integer"
+		resultMap="ResultMapJoinTag">
+		select
+		<include refid="Column_List_Join_Tag" />
+		from t_tag t1 left join (select blog_id,tag_id from t_blog_tag where
+		blog_id=#{blogId,jdbcType=INTEGER}) t2 on t1.tag_id=t2.tag_id
+		where
+		t1.is_del=0 order by t1.priority desc
+	</select>
+	<!-- 删除所有blogId下的所有tag -->
+	<delete id="deleteByBlogId" parameterType="java.lang.Integer">
+		delete from t_blog_tag
+		where blog_id = #{blogId,jdbcType=INTEGER}
+	</delete>
+	<!-- 计算tag对应的文章数 -->
+	<select id="countBlogNum" resultType="java.util.Map">
+		select tag_id as tagId,COUNT(tag_id) as num FROM t_blog_tag
+		 WHERE tag_id IN(SELECT tag_id FROM t_tag WHERE is_del=0)
+		  AND blog_id IN(SELECT blog_id FROM t_blog WHERE is_del=0) GROUP BY tag_id
+	</select>
+</mapper>

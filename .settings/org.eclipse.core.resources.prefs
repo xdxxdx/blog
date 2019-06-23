@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/xdx/util/SellTicket.java=UTF-8
+encoding//src/main/resources/jdbc.properties=UTF-8
+encoding//src/main/resources/log4j.properties=UTF-8
+encoding//src/main/resources/mail.properties=UTF-8
+encoding//src/main/resources/rabbitmq.properties=UTF-8
+encoding//src/main/resources/redis.properties=UTF-8
+encoding//src/main/resources/velocity.properties=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/back/admin/TreeData.jsp=UTF-8
+encoding/<project>=UTF-8

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+<link href="css/common.css" rel="stylesheet">
+<title>内容页</title>
+<style>
+
+</style>
+</head>
+<body>
+	<div class="sui-navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="sui-container">
+				<a href="./index.html" class="sui-brand"><i
+					class="sui-icon icon-github-alt">&nbsp;</i>xdx</a>
+				<ul class="sui-nav">
+					<li class="active"><a href="./index.html">首页</a></li>
+					<li><a href="./tutorial.html">web前端</a></li>
+					<li><a href="./gallery.html">Java</a></li>
+					<li><a href="./examples.html">案例</a></li>
+					<li><a href="./download.html">随笔</a></li>
+					<li><a href="./themes.html">生活</a></li>
+					<li><a href="http://g.alicdn.com/sj/sui-layout/0.0.2/#"
+						target="_blank">工具箱<sup
+							style="font-size: 12px; transform: scale(0.9); display: inline-block;"
+							class="sui-text-danger">新</sup></a></li>
+					<li><a href="./customize.html">架构师</a></li>
+					<li><a href="./changelog.html">更新日志</a></li>
+					<li><a href="./about.html">关于</a></li>
+					<li><a href="http://m.sui.taobao.org/components/"
+						target="_blank">SUI Mobile <sup
+							style="font-size: 13px; display: inline-block;"
+							class="sui-text-danger">新</sup></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="main">
+		<div class="sui-container">
+			<h1>RabbitMQ异步消息队列</h1>
+			<p class="sui-lead">
+				SUI 是一套基于bootstrap开发的前端组件库，同时她也是一套设计规范。<br>通过SUI，可以非常方便的设计和实现精美的页面。
+			</p>
+			<h2 class="sui-page-header">导入jar包</h2>
+			<div>
+				<p>采用maven来维护jar包，rabbitMQ主要有两个jar包:</p>
+				<ul class="unstyled">
+					<li><strong class="strong-danger"> spring-rabbit</strong>
+						rabbitMQ主要的jar包，必须导入</li>
+					<li><strong class="strong-danger"> spring-amqp</strong>
+						spring-amqp主要的jar包，必须导入</li>
+				</ul>
+				<p>pom.xml文件如下：</p>
+				<pre class="prettyprint  linenums">
+&lt;!-- rabbitMQ --&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;com.rabbitmq&lt;/groupId&gt;
+		&lt;artifactId&gt;amqp-client&lt;/artifactId&gt;
+		&lt;version&gt;4.0.2&lt;/version&gt;
+	&lt;/dependency&gt;
+	&lt;!-- spring-rabbitMQ --&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;org.springframework.amqp&lt;/groupId&gt;
+		&lt;artifactId&gt;spring-rabbit&lt;/artifactId&gt;
+		&lt;version&gt;2.0.1.RELEASE&lt;/version&gt;
+	&lt;/dependency&gt;
+				</pre>
+			</div>
+			<h2 class="sui-page-header">主配置文件</h2>
+			<div>
+				<p>在主配置文件中，我们定义了Spring封装好的AmqpTemplate对象，为了方便日后扩展，我们用一个抽象类来编写。</p>
+				<h4>rabbitMQ主配置抽象类</h4>
+				<pre class="prettyprint linenums">
+package com.xdx.spring_rabbit;
+
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+
+/**
+ * 抽象类，rabbitMQ的主配置类
+ * 
+ * @author xdx
+ *
+ */
+public abstract class AbstractRabbitConfiguration {
+
+	@Value("${amqp.port:5672}")
+	private int port = 5672;
+
+	protected abstract void configureRabbitTemplate(RabbitTemplate template);
+
+	/**
+	 * 由于connectionFactory会与项目中的redis的connectionFactory命名冲突，
+	 * 所以这边改名为rabbit_connectionFactory
+	 * 
+	 * @return
+	 */
+	@Bean
+	public ConnectionFactory rabbit_connectionFactory() {
+		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
+				"192.168.1.195");
+		connectionFactory.setUsername("xdx");
+		connectionFactory.setPassword("wonyen@1602");
+		connectionFactory.setPort(port);
+		return connectionFactory;
+	}
+
+	@Bean
+	public RabbitTemplate rabbitTemplate() {
+		RabbitTemplate template = new RabbitTemplate(rabbit_connectionFactory());
+		template.setMessageConverter(jsonMessageConverter());
+		configureRabbitTemplate(template);
+		return template;
+	}
+
+	@Bean
+	public MessageConverter jsonMessageConverter() {
+		return new Jackson2JsonMessageConverter();
+	}
+
+	@Bean
+	public AmqpAdmin amqpAdmin() {
+		RabbitAdmin rabbitAdmin = new RabbitAdmin(rabbit_connectionFactory());
+		return rabbitAdmin;
+	}
+}
+
+				</pre>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<ul class="unstyled">
+			<li>@time 2014.03.07</li>
+			<li>@author xdx写字的地方</li>
+		</ul>
+	</div>
+	<script src="js/lib/jquery.js"></script>
+	<script src="assets/js/google-code-prettify/prettify.js"></script>
+	<script src="assets/js/google-code-prettify/lang-basic.js"></script>
+	<script src="assets/js/google-code-prettify/lang-css.js"></script>
+	<script src="assets/js/application.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+body{
+	font-size: 12px;
+}
+body .content-wrapper{
+	background-color: #fafafa !important;
+}
+a{
+	color:#777;
+}
+.box-thin{
+	position: relative;
+	border-radius: 3px;
+	background: #ffffff;
+	border-top: 1px solid #d2d6de;
+	margin-bottom: 20px;
+	width: 100%;
+	//box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+	padding:5px 0 0 5px;
+}
+.clearfix:before, .clearfix:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.pull-left{
+	float:left;
+}
+.pull-right{
+	float:right;
+}
+@CHARSET "UTF-8";
+.panel-body-padding-vert{
+	padding-left:0px;
+	padding-right:0px;
+}
+.box-padding{
+	padding:15px;
+}
+.row-margin{
+	margin:15px 0px;
+}
+small.help-block{
+	font-size:100% ;
+	color:red ;
+}
+i.fv-icon-no-label.glyphicon-remove{
+	color:red ;
+}
+i.fv-icon-no-label.glyphicon-ok{
+	color:green ;
+}
+.lay-form{
+	width:100%;
+	padding:5px 20px;
+}
+.label-layer-left{
+	float:left;
+	width:20%;
+	text-align: right;
+	padding-top:7px;
+}
+.label-layer-left-8{
+	float:left;
+	width:8%;
+	text-align: right;
+	padding-top:7px;
+}
+.div-layer-left{
+	float:left;
+	width:70%;
+	padding-left:15px;
+	position:relative;
+}
+.div-layer-left-80{
+	float:left;
+	width:80%;
+	padding-left:15px;
+	position:relative;
+}
+.layui-table td, .layui-table th{
+	font-size: 12px;
+}
+.layui-table-view .layui-table td{
+	padding:2px 0;
+}
+.layui-table-cell{
+	line-height: 22px;
+}
+.row{
+	margin-bottom: 10px;
+}
+.layui-laypage .layui-laypage-curr .layui-laypage-em{
+	background-color: #1E9FFF;
+}
+.form-control{
+	height: 30px;
+	font-size: 12px;
+}
+.form-group label{
+	margin-bottom: 0;
+}
+.treeview-menu > li > a.second-menu{
+	font-size: 13px;
+}
+.word-count{
+	position: relative;
+}
+.word-count .word-wrap{
+	position: absolute;
+	right: 6px;
+	bottom: 6px;
+}
+.word-count .word-wrap .current-num{
+	color: red;
+	padding: 0 4px;
+}
+.form-group #isPrivate{
+	margin-top: 10px;
+}
+.user-panel > .image > img{
+	height: 45px;
+}
